@@ -63,6 +63,12 @@
         -webkit-text-fill-color: transparent;
         letter-spacing: 1px;
         text-transform: uppercase;
+        animation: glow-text 3s ease-in-out infinite;
+    }
+
+    @keyframes glow-text {
+        0%, 100% { filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3)); }
+        50% { filter: drop-shadow(0 0 20px rgba(240, 147, 251, 0.6)); }
     }
 
     nav ul {
@@ -91,6 +97,11 @@
         transition: width 0.3s;
     }
 
+    nav a:hover {
+        color: #f093fb;
+        text-shadow: 0 0 10px rgba(240, 147, 251, 0.5);
+    }
+
     nav a:hover::after {
         width: 100%;
     }
@@ -117,6 +128,12 @@
         bottom: 0;
         background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
         pointer-events: none;
+        animation: pulse-bg 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-bg {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
     }
 
     .hero-content {
@@ -140,6 +157,12 @@
         font-weight: 900;
         letter-spacing: -1px;
         line-height: 1.1;
+        animation: slideInDown 1s ease-out;
+    }
+
+    @keyframes slideInDown {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     .hero-content p {
@@ -149,6 +172,12 @@
         background: linear-gradient(90deg, #a78bfa, #fbbf24);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        animation: slideInUp 1.2s ease-out;
+    }
+
+    @keyframes slideInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     .cta-button {
@@ -165,6 +194,24 @@
         font-size: 1.1rem;
         text-transform: uppercase;
         letter-spacing: 1px;
+        animation: slideInUp 1.4s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .cta-button:hover::before {
+        left: 100%;
     }
 
     .cta-button:hover {
@@ -195,6 +242,12 @@
         margin: 1.5rem auto 0;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        animation: expandWidth 0.8s ease-out;
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 100px; }
     }
 
     .container {
@@ -227,6 +280,7 @@
         opacity: 0;
         transform: translateY(30px);
         position: relative;
+        cursor: pointer;
     }
 
     .project-card::before {
@@ -245,6 +299,23 @@
         50% { opacity: 0.8; }
     }
 
+    .project-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        transition: left 0.6s;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .project-card:hover::after {
+        left: 100%;
+    }
+
     .project-card:hover {
         transform: translateY(-15px);
         box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
@@ -261,10 +332,25 @@
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
         border-bottom: 1px solid rgba(102, 126, 234, 0.2);
         transition: all 0.5s;
+        position: relative;
+    }
+
+    .project-image::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(240, 147, 251, 0.2), transparent);
+        opacity: 0;
+        transition: opacity 0.5s;
     }
 
     .project-card:hover .project-image {
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(240, 147, 251, 0.2));
+        transform: scale(1.05);
+    }
+
+    .project-card:hover .project-image::before {
+        opacity: 1;
     }
 
     .project-content {
@@ -278,6 +364,11 @@
         margin-bottom: 0.8rem;
         font-size: 1.3rem;
         font-weight: 700;
+        transition: color 0.3s;
+    }
+
+    .project-card:hover .project-content h3 {
+        color: #f093fb;
     }
 
     .project-content p {
@@ -302,7 +393,8 @@
 
     .tech-tag:hover {
         background: rgba(102, 126, 234, 0.3);
-        transform: scale(1.05);
+        transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
     }
 
     .project-link {
@@ -311,11 +403,24 @@
         color: #fbbf24;
         transition: all 0.3s;
         display: inline-block;
+        position: relative;
+    }
+
+    .project-link::after {
+        content: "→";
+        position: absolute;
+        right: -25px;
+        transition: all 0.3s;
     }
 
     .project-link:hover {
         color: #f093fb;
         transform: translateX(5px);
+    }
+
+    .project-link:hover::after {
+        right: -30px;
+        color: #f093fb;
     }
 
     /* ABOUT */
@@ -347,6 +452,12 @@
         color: #c5d0f0;
         line-height: 1.8;
         margin-bottom: 1rem;
+        transition: all 0.3s;
+    }
+
+    .about p:hover {
+        color: #a78bfa;
+        transform: translateX(5px);
     }
 
     .skills {
@@ -364,12 +475,27 @@
         transition: all 0.3s;
         border: 1px solid rgba(102, 126, 234, 0.4);
         cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .skill::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(240, 147, 251, 0.4), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.5s;
     }
 
     .skill:hover {
         transform: translateY(-5px) scale(1.08);
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(240, 147, 251, 0.3));
         box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .skill:hover::before {
+        transform: translateX(100%);
     }
 
     /* CONTACT */
@@ -388,6 +514,7 @@
         color: #c5d0f0;
         margin-bottom: 3rem;
         font-size: 1.1rem;
+        animation: fadeIn 1s ease-out;
     }
 
     .contact-links {
@@ -409,6 +536,26 @@
         transition: all 0.3s;
         border: 2px solid rgba(102, 126, 234, 0.3);
         font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-link::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(240, 147, 251, 0.3), transparent);
+        opacity: 0;
+        transition: all 0.4s;
+    }
+
+    .contact-link:hover::before {
+        opacity: 1;
+        top: -20%;
+        left: -20%;
     }
 
     .contact-link:hover {
@@ -437,8 +584,33 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
     .show {
         animation: fadeUp 0.8s ease forwards !important;
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        z-index: 101;
+        transition: width 0.1s ease;
+    }
+
+    /* STARS BACKGROUND */
+    .star {
+        position: fixed;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
     }
 
     @media (max-width: 768px) {
@@ -451,6 +623,7 @@
 </head>
 <body>
 
+<div class="scroll-indicator" id="scrollIndicator"></div>
 <canvas id="canvas"></canvas>
 
 <div class="content-wrapper">
@@ -490,7 +663,7 @@
                             <span class="tech-tag">JIRA Agent</span>
                         </div>
                         <br><br>
-                        <a href="https://github.com" class="project-link">View Project →</a>
+                        <a href="https://github.com" class="project-link">View Project</a>
                     </div>
                 </div>
 
@@ -506,7 +679,7 @@
                             <span class="tech-tag">Python</span>
                         </div>
                         <br><br>
-                        <a href="https://github.com" class="project-link">View Project →</a>
+                        <a href="https://github.com" class="project-link">View Project</a>
                     </div>
                 </div>
 
@@ -522,7 +695,7 @@
                             <span class="tech-tag">Pandas</span>
                         </div>
                         <br><br>
-                        <a href="https://github.com" class="project-link">View Project →</a>
+                        <a href="https://github.com" class="project-link">View Project</a>
                     </div>
                 </div>
             </div>
@@ -535,8 +708,7 @@
             <div class="about-content">
                 <div>
                     <h3>Who I Am</h3>
-                    <p>I'm an AI enthusiast passionate about building intelligent systems that solve real-world problems. With expertise in machine learning, deep learning, and data science, I explore the frontiers of artificial intelligence.</p>
-                    <p>My mission: Create innovative AI solutions that make meaningful impact and advance technology forward.</p>
+                    <p>I’m an AI enthusiast dedicated to developing intelligent systems that address real-world challenges. With a strong foundation in machine learning, deep learning, and data science, I continuously explore the evolving frontiers of artificial intelligence. My mission is to design and implement innovative AI solutions that drive meaningful impact, enhance human capability, and contribute to the advancement of technology.</p>
                 </div>
                 <div>
                     <h3>Skills & Expertise</h3>
@@ -573,9 +745,17 @@
 </div>
 
 <script>
-    // THREE.JS 3D BACKGROUND
+    // SCROLL PROGRESS INDICATOR
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    window.addEventListener('scroll', () => {
+        const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        scrollIndicator.style.width = scrollPercentage + '%';
+    });
+
+    // THREE.JS 3D BACKGROUND WITH ENHANCED EFFECTS
     let scene, camera, renderer;
     let particles = [];
+    let mouse = { x: 0, y: 0 };
 
     function initThree() {
         scene = new THREE.Scene();
@@ -587,7 +767,7 @@
 
         // Create particle network
         const geometry = new THREE.BufferGeometry();
-        const count = 150;
+        const count = 200;
         const positions = new Float32Array(count * 3);
 
         for (let i = 0; i < count * 3; i++) {
@@ -598,23 +778,16 @@
 
         const material = new THREE.PointsMaterial({
             color: 0x667eea,
-            size: 2,
+            size: 2.5,
             sizeAttenuation: true,
-            opacity: 0.6,
+            opacity: 0.7,
             transparent: true
         });
 
         const points = new THREE.Points(geometry, material);
         scene.add(points);
 
-        // Add lines connecting nearby particles
-        const lineGeometry = new THREE.BufferGeometry();
-        const lineMaterial = new THREE.LineBasicMaterial({ 
-            color: 0x764ba2, 
-            opacity: 0.2, 
-            transparent: true 
-        });
-
+        // Initialize particles
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: positions[i * 3],
@@ -626,13 +799,14 @@
             });
         }
 
-        // Add glowing spheres
-        for (let i = 0; i < 5; i++) {
-            const sphereGeom = new THREE.SphereGeometry(2 + Math.random() * 3, 32, 32);
+        // Add glowing spheres with different colors
+        const colors = [0x667eea, 0x764ba2, 0xf093fb];
+        for (let i = 0; i < 8; i++) {
+            const sphereGeom = new THREE.SphereGeometry(2 + Math.random() * 4, 32, 32);
             const sphereMat = new THREE.MeshBasicMaterial({
-                color: new THREE.Color().setHSL(0.6 + Math.random() * 0.1, 1, 0.5),
+                color: colors[i % colors.length],
                 wireframe: true,
-                opacity: 0.4,
+                opacity: 0.3 + Math.random() * 0.3,
                 transparent: true
             });
             const sphere = new THREE.Mesh(sphereGeom, sphereMat);
@@ -641,8 +815,35 @@
                 (Math.random() - 0.5) * 150,
                 (Math.random() - 0.5) * 150
             );
+            sphere.userData.rotationSpeed = Math.random() * 0.002;
             scene.add(sphere);
         }
+
+        // Add torus knots for extra visual interest
+        for (let i = 0; i < 3; i++) {
+            const torusGeom = new THREE.TorusKnotGeometry(4 + Math.random() * 3, 1.5, 100, 16);
+            const torusMat = new THREE.MeshBasicMaterial({
+                color: colors[i % colors.length],
+                wireframe: true,
+                opacity: 0.2,
+                transparent: true
+            });
+            const torus = new THREE.Mesh(torusGeom, torusMat);
+            torus.position.set(
+                (Math.random() - 0.5) * 200,
+                (Math.random() - 0.5) * 200,
+                (Math.random() - 0.5) * 200
+            );
+            torus.userData.rotationSpeedX = Math.random() * 0.001;
+            torus.userData.rotationSpeedY = Math.random() * 0.002;
+            scene.add(torus);
+        }
+
+        // Mouse tracking for interactive effect
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
 
         animate();
     }
@@ -650,26 +851,41 @@
     function animate() {
         requestAnimationFrame(animate);
 
-        // Update particles
+        // Update particles with physics
         particles.forEach(p => {
             p.x += p.vx;
             p.y += p.vy;
             p.z += p.vz;
 
-            if (p.x > 100) p.vx *= -1;
-            if (p.x < -100) p.vx *= -1;
-            if (p.y > 100) p.vy *= -1;
-            if (p.y < -100) p.vy *= -1;
-            if (p.z > 100) p.vz *= -1;
-            if (p.z < -100) p.vz *= -1;
+            // Damping
+            p.vx *= 0.99;
+            p.vy *= 0.99;
+            p.vz *= 0.99;
+
+            // Boundary wrapping
+            if (p.x > 100) { p.vx *= -1; p.x = 100; }
+            if (p.x < -100) { p.vx *= -1; p.x = -100; }
+            if (p.y > 100) { p.vy *= -1; p.y = 100; }
+            if (p.y < -100) { p.vy *= -1; p.y = -100; }
+            if (p.z > 100) { p.vz *= -1; p.z = 100; }
+            if (p.z < -100) { p.vz *= -1; p.z = -100; }
         });
 
+        // Rotate all mesh objects
         scene.children.forEach(child => {
-            if (child.rotation) {
-                child.rotation.x += 0.0002;
-                child.rotation.y += 0.0003;
+            if (child.userData.rotationSpeed) {
+                child.rotation.x += child.userData.rotationSpeed;
+                child.rotation.y += child.userData.rotationSpeed;
+            }
+            if (child.userData.rotationSpeedX) {
+                child.rotation.x += child.userData.rotationSpeedX;
+                child.rotation.y += child.userData.rotationSpeedY;
             }
         });
+
+        // Mouse interaction effect
+        camera.position.x += mouse.x * 0.5;
+        camera.position.y += mouse.y * 0.5;
 
         renderer.render(scene, camera);
     }
@@ -688,21 +904,38 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            const target = document.querySelector(this.getAttribute('href'));
+            target.scrollIntoView({ behavior: 'smooth' });
         });
     });
 
-    // Fade-up animation on scroll
+    // Fade-up animation on scroll with staggered effect
     const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('show');
+                setTimeout(() => {
+                    entry.target.classList.add('show');
+                }, index * 100);
             }
         });
     }, { threshold: 0.2 });
 
     document.querySelectorAll('.project-card, section').forEach(el => observer.observe(el));
-</script>
 
-</body>
-</html>
+    // Add keyboard navigation support
+    document.addEventListener('keydown', (e) => {
+        const sections = ['#home', '#projects', '#about', '#contact'];
+        const currentSection = window.location.hash || '#home';
+        const currentIndex = sections.indexOf(currentSection);
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const nextIndex = (currentIndex + 1) % sections.length;
+            document.querySelector(sections[nextIndex]).scrollIntoView({ behavior: 'smooth' });
+        }
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prevIndex = (currentIndex - 1 + sections.length) % sections.length;
+            document.querySelector(sections[prevIndex]).scrollIntoView({ behavior: 'smooth' });
+        }
+    });
