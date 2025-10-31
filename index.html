@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Projects Portfolio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-    /* --- GLOBAL RESET --- */
     * {
         margin: 0;
         padding: 0;
@@ -14,21 +14,36 @@
 
     body {
         font-family: 'Poppins', 'Segoe UI', sans-serif;
-        background: linear-gradient(180deg, #f8f9fa 0%, #f2f3f7 100%);
-        color: #333;
+        background: #0a0e27;
+        color: #e0e6ff;
         overflow-x: hidden;
+        position: relative;
     }
 
-    /* --- HEADER --- */
+    #canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: block;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* HEADER */
     header {
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: rgba(20, 24, 60, 0.7);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
         color: white;
-        padding: 1.5rem 0;
+        padding: 1.2rem 0;
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.15);
-        backdrop-filter: blur(6px);
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
     }
 
     nav {
@@ -42,117 +57,144 @@
 
     .logo {
         font-size: 1.8rem;
-        font-weight: bold;
-        background: linear-gradient(90deg, #ffffff, #d1c4ff);
+        font-weight: 800;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+        text-transform: uppercase;
     }
 
     nav ul {
         display: flex;
         list-style: none;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 
     nav a {
-        color: #fff;
+        color: #e0e6ff;
         text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
+        font-weight: 600;
+        transition: all 0.3s;
+        position: relative;
+        font-size: 0.95rem;
     }
 
-    nav a:hover {
-        color: #ffd1ff;
+    nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transition: width 0.3s;
     }
 
-    /* --- HERO SECTION --- */
+    nav a:hover::after {
+        width: 100%;
+    }
+
+    /* HERO */
     .hero {
         position: relative;
-        background: linear-gradient(120deg, #667eea, #764ba2);
         color: white;
         text-align: center;
-        padding: 7rem 2rem;
+        padding: 10rem 2rem 8rem;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         overflow: hidden;
     }
 
-    /* Floating particles */
     .hero::before {
         content: "";
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15), transparent 60%);
-        animation: rotate 25s linear infinite;
-        z-index: 0;
-    }
-
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+        pointer-events: none;
     }
 
     .hero-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         animation: fadeZoom 1.2s ease-out;
+        max-width: 800px;
     }
 
     @keyframes fadeZoom {
-        from { opacity: 0; transform: scale(0.95); }
+        from { opacity: 0; transform: scale(0.9); }
         to { opacity: 1; transform: scale(1); }
     }
 
     .hero-content h1 {
-        font-size: 3.5rem;
-        background: linear-gradient(90deg, #fff, #e0d4ff);
+        font-size: 4.5rem;
+        background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 1rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        line-height: 1.1;
     }
 
     .hero-content p {
-        font-size: 1.3rem;
-        opacity: 0.9;
-        margin-bottom: 2rem;
+        font-size: 1.4rem;
+        opacity: 0.85;
+        margin-bottom: 2.5rem;
+        background: linear-gradient(90deg, #a78bfa, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .cta-button {
-        background: linear-gradient(90deg, #ffffff, #e5e0ff);
-        color: #5a50e0;
-        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 1.2rem 3rem;
         border-radius: 50px;
-        font-weight: bold;
+        font-weight: 700;
         text-decoration: none;
-        box-shadow: 0 0 15px rgba(255,255,255,0.4);
-        transition: all 0.3s ease;
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.4s ease;
+        display: inline-block;
+        border: 2px solid transparent;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .cta-button:hover {
-        transform: scale(1.07);
-        box-shadow: 0 0 25px rgba(255,255,255,0.8);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 0 50px rgba(102, 126, 234, 0.8);
+        background: linear-gradient(135deg, #764ba2, #f093fb);
     }
 
-    /* --- SECTION TITLES --- */
+    /* SECTION TITLES */
     section h2 {
         text-align: center;
-        font-size: 2.6rem;
-        background: linear-gradient(90deg, #667eea, #764ba2);
+        font-size: 3.2rem;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 3rem;
+        margin-bottom: 4rem;
         position: relative;
+        font-weight: 900;
+        letter-spacing: -1px;
     }
 
     section h2::after {
         content: "";
         display: block;
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        margin: 1rem auto 0;
-        border-radius: 2px;
+        width: 100px;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        margin: 1.5rem auto 0;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
     }
 
     .container {
@@ -161,185 +203,277 @@
         padding: 0 2rem;
     }
 
-    /* --- PROJECTS --- */
+    /* PROJECTS */
+    #projects {
+        padding: 6rem 0;
+        position: relative;
+        z-index: 2;
+    }
+
     .projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 2.5rem;
     }
 
     .project-card {
-        background: #fff;
-        border-radius: 15px;
+        background: rgba(30, 40, 80, 0.6);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-        transition: all 0.4s ease;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
+        position: relative;
+    }
+
+    .project-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+        animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
     }
 
     .project-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 8px 30px rgba(118,75,162,0.3);
+        transform: translateY(-15px);
+        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.6);
+        background: rgba(30, 40, 80, 0.9);
     }
 
     .project-image {
-        height: 200px;
+        height: 220px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3rem;
-        color: white;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        transition: background 0.5s ease;
+        font-size: 4rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        transition: all 0.5s;
     }
 
     .project-card:hover .project-image {
-        background: linear-gradient(135deg, #764ba2, #667eea);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(240, 147, 251, 0.2));
     }
 
     .project-content {
-        padding: 1.8rem;
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
     }
 
     .project-content h3 {
-        color: #667eea;
-        margin-bottom: 0.6rem;
+        color: #a78bfa;
+        margin-bottom: 0.8rem;
+        font-size: 1.3rem;
+        font-weight: 700;
     }
 
     .project-content p {
-        color: #555;
+        color: #c5d0f0;
         font-size: 0.95rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
     }
 
     .tech-tag {
-        background: #f1efff;
-        color: #5a50e0;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        margin: 0.2rem;
+        background: rgba(102, 126, 234, 0.15);
+        color: #a78bfa;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        margin: 0.3rem;
         font-size: 0.85rem;
         display: inline-block;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .tech-tag:hover {
+        background: rgba(102, 126, 234, 0.3);
+        transform: scale(1.05);
     }
 
     .project-link {
         text-decoration: none;
-        font-weight: bold;
-        color: #5a50e0;
-        transition: color 0.3s;
+        font-weight: 700;
+        color: #fbbf24;
+        transition: all 0.3s;
+        display: inline-block;
     }
 
     .project-link:hover {
-        color: #764ba2;
+        color: #f093fb;
+        transform: translateX(5px);
     }
 
-    /* --- ABOUT --- */
+    /* ABOUT */
     .about {
-        background-color: #fff;
-        padding: 5rem 0;
-        box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
+        background: rgba(20, 24, 60, 0.5);
+        backdrop-filter: blur(10px);
+        padding: 6rem 0;
+        position: relative;
+        z-index: 2;
+        border-top: 1px solid rgba(102, 126, 234, 0.2);
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
     }
 
     .about-content {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 3rem;
+        gap: 4rem;
         align-items: center;
+    }
+
+    .about h3 {
+        color: #a78bfa;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+
+    .about p {
+        color: #c5d0f0;
+        line-height: 1.8;
+        margin-bottom: 1rem;
     }
 
     .skills {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 1.2rem;
     }
 
     .skill {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: #fff;
-        padding: 0.7rem 1.4rem;
-        border-radius: 30px;
-        font-weight: 500;
-        transition: transform 0.3s;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.2));
+        color: #a78bfa;
+        padding: 0.9rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: 1px solid rgba(102, 126, 234, 0.4);
+        cursor: pointer;
     }
 
     .skill:hover {
-        transform: scale(1.1);
+        transform: translateY(-5px) scale(1.08);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(240, 147, 251, 0.3));
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
     }
 
-    /* --- CONTACT --- */
+    /* CONTACT */
     .contact {
         text-align: center;
-        background: #fff;
-        padding: 5rem 0;
+        padding: 6rem 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .contact h2 {
+        margin-bottom: 2rem;
+    }
+
+    .contact > .container > p {
+        color: #c5d0f0;
+        margin-bottom: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .contact-links {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
     }
 
     .contact-link {
         display: inline-block;
-        padding: 1rem 2rem;
-        margin: 0.5rem;
-        background: linear-gradient(90deg, #f0f0ff, #f8f9ff);
-        border-radius: 10px;
-        color: #5a50e0;
-        font-weight: 500;
+        padding: 1rem 2.2rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.1));
+        border-radius: 50px;
+        color: #a78bfa;
+        font-weight: 700;
         text-decoration: none;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
         transition: all 0.3s;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        font-size: 1rem;
     }
 
     .contact-link:hover {
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        color: white;
-        box-shadow: 0 4px 20px rgba(118,75,162,0.3);
-    }
-
-    /* --- FOOTER --- */
-    footer {
         background: linear-gradient(135deg, #667eea, #764ba2);
-        color: #fff;
-        text-align: center;
-        padding: 2rem;
-        font-size: 0.95rem;
-        box-shadow: 0 -2px 15px rgba(0,0,0,0.15);
+        color: white;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        border-color: #667eea;
+        transform: translateY(-3px);
     }
 
-    /* --- ANIMATIONS ON SCROLL --- */
+    /* FOOTER */
+    footer {
+        background: rgba(10, 14, 39, 0.9);
+        border-top: 1px solid rgba(102, 126, 234, 0.2);
+        color: #c5d0f0;
+        text-align: center;
+        padding: 2.5rem;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ANIMATIONS */
     @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .show {
-        animation: fadeUp 0.8s ease forwards;
+        animation: fadeUp 0.8s ease forwards !important;
     }
 
     @media (max-width: 768px) {
-        .hero-content h1 { font-size: 2.4rem; }
+        .hero-content h1 { font-size: 2.8rem; }
         .about-content { grid-template-columns: 1fr; }
+        section h2 { font-size: 2.2rem; }
+        nav ul { gap: 1.5rem; font-size: 0.9rem; }
     }
 </style>
 </head>
 <body>
 
-<header>
-    <nav>
-        <div class="logo">AI Portfolio</div>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<canvas id="canvas"></canvas>
 
-<section class="hero" id="home">
-    <div class="hero-content">
-        <h1>AI Project Showcase</h1>
-        <p>Building intelligent systems that shape the future</p>
-        <a href="#projects" class="cta-button">🚀 Explore My Projects</a>
-    </div>
-</section>
+<div class="content-wrapper">
+    <header>
+        <nav>
+            <div class="logo">🧠 AI Portfolio</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>AI Project Showcase</h1>
+            <p>🚀 Building Intelligent Systems That Shape the Future</p>
+            <a href="#projects" class="cta-button">⚡ Explore Projects</a>
+        </div>
+    </section>
+
     <section id="projects">
         <div class="container">
             <h2>Featured Projects</h2>
@@ -347,21 +481,15 @@
                 <div class="project-card">
                     <div class="project-image">🧠</div>
                     <div class="project-content">
-                        <h3>MCA Pipeline Automation: AI-Driven Epic Processing for Enterprise Delivery</h3>
-                        <p>MCA Pipeline Automation: AI-Driven Epic Processing for Enterprise Delivery. MCA Solution Overview : AI-Orchestrated Zero-Touch Pipeline.The MCA Pipeline is an AI-driven automation layer that transforms the Epic-to-Development-Ready workflow into a near zero-touch process.
-                            Key Components (Three Specialized Agents):
-                            
-                            MCA Orchestrator (The Manager): Written in Python, this agent detects new Epics in Jira, validates their status, manages the overall workflow state, and ensures no duplicate processing.
-                            
-                            Gemini AI Generator (The Brain): Leverages the Google Gemini API to instantly consume the high-level Epic description andGenerate INVEST-Ready User Stories: Breaking down the Epic into actionable, testable stories.Create Detailed Acceptance Criteria (AC): Standardizing AC quality using pre-trained templates.Develop Comprehensive Test Cases: Mapping specific test steps directly to the generated AC.
-                            
-                            Jira Integration Agent (The Executor): Automatically creates the new Stories and Test Cases in Jira, establishing the necessary parent-child and 'Tested By' links for full traceability back to the original Epic.</p>
-                        <div class="tech-tags">
+                        <h3>MCA Pipeline Automation: AI-Driven Epic Processing</h3>
+                        <p>An intelligent automation layer transforming Epic-to-Development-Ready workflows into near zero-touch processes. Three specialized agents orchestrate the entire pipeline seamlessly.</p>
+                        <div>
                             <span class="tech-tag">Python</span>
                             <span class="tech-tag">Gemini AI</span>
                             <span class="tech-tag">MCP</span>
                             <span class="tech-tag">JIRA Agent</span>
                         </div>
+                        <br><br>
                         <a href="https://github.com" class="project-link">View Project →</a>
                     </div>
                 </div>
@@ -369,14 +497,15 @@
                 <div class="project-card">
                     <div class="project-image">👁️</div>
                     <div class="project-content">
-                        <h3>Revolutionizing Business Process Modeling: From Excel → BPMN with AI</h3>
-                        <p>Transforming your Excel requirements into ready-to-use BPMN diagrams with AI is now possible. Using Google Gemini + Python, I automated the flow from Excel → BPMN → Camunda, cutting hours of manual modeling into minutes. This approach bridges the gap between requirements documentation and process modeling — saving analysts and architects valuable time. Would you try AI-assisted BPMN generation in your projects.</p>
-                        <div class="tech-tags">
+                        <h3>AI-Powered BPMN Generation from Excel</h3>
+                        <p>Transform your Excel requirements into production-ready BPMN diagrams instantly. Using Google Gemini and Python, cutting hours of manual modeling into minutes.</p>
+                        <div>
                             <span class="tech-tag">Gemini AI</span>
                             <span class="tech-tag">BPMN 2.0</span>
-                            <span class="tech-tag">Camunda Modeler</span>
-                            <span class="tech-tag">Phyton</span>
+                            <span class="tech-tag">Camunda</span>
+                            <span class="tech-tag">Python</span>
                         </div>
+                        <br><br>
                         <a href="https://github.com" class="project-link">View Project →</a>
                     </div>
                 </div>
@@ -384,15 +513,15 @@
                 <div class="project-card">
                     <div class="project-image">📊</div>
                     <div class="project-content">
-                        <h3>AI-Driven Customer Churn Prediction System</h3>
-                        <p>We have successfully developed and deployed an AI-powered customer churn prediction system that identifies high-risk customers before they leave. This system leverages machine learning to enable proactive retention strategies, potentially reducing customer churn by 20-30% and increasing customer lifetime value significantly.
-Key Achievement: System is production-ready and can process all customer data in minutes, enabling real-time intervention..</p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Light GBM</span>
-                            <span class="tech-tag">Phyton</span>
+                        <h3>AI Customer Churn Prediction System</h3>
+                        <p>Production-ready ML system identifying high-risk customers before they leave. Reduce churn by 20-30% and increase lifetime value with intelligent interventions.</p>
+                        <div>
+                            <span class="tech-tag">LightGBM</span>
+                            <span class="tech-tag">Python</span>
                             <span class="tech-tag">SQL</span>
                             <span class="tech-tag">Pandas</span>
                         </div>
+                        <br><br>
                         <a href="https://github.com" class="project-link">View Project →</a>
                     </div>
                 </div>
@@ -404,19 +533,19 @@ Key Achievement: System is production-ready and can process all customer data in
         <div class="container">
             <h2>About Me</h2>
             <div class="about-content">
-                <div class="about-text">
+                <div>
                     <h3>Who I Am</h3>
-                    <p>I'm an AI enthusiast passionate about building intelligent systems that solve real-world problems. With experience in machine learning, deep learning, and data science, I love exploring the frontiers of artificial intelligence.</p>
-                    <p>My goal is to create innovative AI solutions that make a meaningful impact and contribute to the advancement of technology.</p>
+                    <p>I'm an AI enthusiast passionate about building intelligent systems that solve real-world problems. With expertise in machine learning, deep learning, and data science, I explore the frontiers of artificial intelligence.</p>
+                    <p>My mission: Create innovative AI solutions that make meaningful impact and advance technology forward.</p>
                 </div>
                 <div>
-                    <h3>Skills & Technologies</h3>
+                    <h3>Skills & Expertise</h3>
                     <div class="skills">
                         <div class="skill">Python</div>
                         <div class="skill">Machine Learning</div>
                         <div class="skill">Deep Learning</div>
-                        <div class="skill">Promt Engineering</div>
-                        <div class="skill">Aegetic AI</div>
+                        <div class="skill">Prompt Engineering</div>
+                        <div class="skill">Agentic AI</div>
                         <div class="skill">AI Tools</div>
                         <div class="skill">Data Analysis</div>
                     </div>
@@ -428,7 +557,7 @@ Key Achievement: System is production-ready and can process all customer data in
     <section id="contact">
         <div class="container">
             <h2>Get In Touch</h2>
-            <p style="text-align: center; margin-bottom: 2rem; color: #666;">Have a project or question? I'd love to hear from you!</p>
+            <p>Have a project or question? Let's collaborate and build something amazing together! 🚀</p>
             <div class="contact-links">
                 <a href="mailto:ybalaramireddy@gmail.com" class="contact-link">📧 Email</a>
                 <a href="https://github.com" target="_blank" class="contact-link">🐙 GitHub</a>
@@ -438,11 +567,123 @@ Key Achievement: System is production-ready and can process all customer data in
         </div>
     </section>
 
-   <footer>
-    <p>© 2025 Balarami Reddy — AI & Automation Innovator</p>
-</footer>
+    <footer>
+        <p>© 2025 Balarami Reddy — AI & Automation Innovator | Shaping the Future with Intelligence</p>
+    </footer>
+</div>
 
 <script>
+    // THREE.JS 3D BACKGROUND
+    let scene, camera, renderer;
+    let particles = [];
+
+    function initThree() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        camera.position.z = 50;
+
+        // Create particle network
+        const geometry = new THREE.BufferGeometry();
+        const count = 150;
+        const positions = new Float32Array(count * 3);
+
+        for (let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 200;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: 0x667eea,
+            size: 2,
+            sizeAttenuation: true,
+            opacity: 0.6,
+            transparent: true
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Add lines connecting nearby particles
+        const lineGeometry = new THREE.BufferGeometry();
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x764ba2, 
+            opacity: 0.2, 
+            transparent: true 
+        });
+
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: positions[i * 3],
+                y: positions[i * 3 + 1],
+                z: positions[i * 3 + 2],
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                vz: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        // Add glowing spheres
+        for (let i = 0; i < 5; i++) {
+            const sphereGeom = new THREE.SphereGeometry(2 + Math.random() * 3, 32, 32);
+            const sphereMat = new THREE.MeshBasicMaterial({
+                color: new THREE.Color().setHSL(0.6 + Math.random() * 0.1, 1, 0.5),
+                wireframe: true,
+                opacity: 0.4,
+                transparent: true
+            });
+            const sphere = new THREE.Mesh(sphereGeom, sphereMat);
+            sphere.position.set(
+                (Math.random() - 0.5) * 150,
+                (Math.random() - 0.5) * 150,
+                (Math.random() - 0.5) * 150
+            );
+            scene.add(sphere);
+        }
+
+        animate();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Update particles
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.z += p.vz;
+
+            if (p.x > 100) p.vx *= -1;
+            if (p.x < -100) p.vx *= -1;
+            if (p.y > 100) p.vy *= -1;
+            if (p.y < -100) p.vy *= -1;
+            if (p.z > 100) p.vz *= -1;
+            if (p.z < -100) p.vz *= -1;
+        });
+
+        scene.children.forEach(child => {
+            if (child.rotation) {
+                child.rotation.x += 0.0002;
+                child.rotation.y += 0.0003;
+            }
+        });
+
+        renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener('resize', onWindowResize);
+
+    initThree();
+
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -462,5 +703,6 @@ Key Achievement: System is production-ready and can process all customer data in
 
     document.querySelectorAll('.project-card, section').forEach(el => observer.observe(el));
 </script>
+
 </body>
 </html>
